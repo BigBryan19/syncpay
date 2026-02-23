@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import {
   Globe,
   Zap,
@@ -18,10 +18,8 @@ import {
   MapPin,
   ArrowRight,
   Layers,
-  ArrowUpRight,
-  Headset,
   CheckCircle2,
-  FileSpreadsheet,
+  Headset,
 } from "lucide-react";
 
 const App = () => {
@@ -29,8 +27,11 @@ const App = () => {
   const [isLive, setIsLive] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
+  // Handle scroll for navbar shadow
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -56,502 +57,224 @@ const App = () => {
   return (
     <div className="bg-[#FDFBF9] min-h-screen text-[#2D241E] font-clash selection:bg-[#B68D40] selection:text-white overflow-x-hidden">
       <style>{`
-        @import url('https://api.fontshare.com/v2/css?f[]=clash-grotesk@300,400,500,600,700&display=swap');
+        @import url('https://api.fontshare.com/v2/css?f[]=clash-grotesk@200,400,500,600,700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
         
         .font-clash { font-family: 'Clash Grotesk', sans-serif; }
         .font-syne { font-family: 'Syne', sans-serif; }
         .font-mono { font-family: 'JetBrains Mono', monospace !important; }
         
-        /* Editorial Fine Grid Background */
-        .bg-grid-pattern {
-          background-size: 40px 40px;
-          background-image: 
-            linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-        }
+        .bg-tobacco { background-color: #2D241E; }
+        .text-tobacco { color: #2D241E; }
+        .bg-bronze { background-color: #B68D40; }
+        .text-bronze { color: #B68D40; }
+        .bg-parchment { background-color: #FDFBF9; }
+        .bg-oak { background-color: #EFE6DD; }
         
-        .bg-grid-pattern-dark {
-          background-size: 40px 40px;
-          background-image: 
-            linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        .bento-card {
+          transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
-
-        .reveal-up {
-          animation: revealUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-          opacity: 0;
-          transform: translateY(40px);
-        }
-        
-        @keyframes revealUp {
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .editorial-card {
-          transition: background-color 0.3s ease, border-color 0.3s ease;
-        }
-        .editorial-card:hover {
-          background-color: #EFE6DD;
-          border-color: #2D241E;
-        }
-        .editorial-card.dark:hover {
-          background-color: #B68D40;
+        .bento-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 20px 40px rgba(45, 36, 30, 0.08);
           border-color: #B68D40;
+        }
+
+        .abstract-node {
+          animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-20px); }
+          100% { transform: translateY(0px); }
+        }
+        
+        .pulse-ring {
+          animation: pulse-ring 3s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        @keyframes pulse-ring {
+          0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(182, 141, 64, 0.5); }
+          70% { transform: scale(1); box-shadow: 0 0 0 30px rgba(182, 141, 64, 0); }
+          100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(182, 141, 64, 0); }
         }
       `}</style>
 
       {/* NAVBAR */}
       <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-300 border-b ${scrolled ? "bg-[#FDFBF9] border-stone-200 py-4" : "bg-transparent border-transparent py-6"}`}
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-[#FDFBF9]/90 backdrop-blur-md shadow-sm py-4" : "bg-transparent py-6"}`}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div
-              className={`w-8 h-8 flex items-center justify-center ${scrolled ? "bg-tobacco text-white" : "bg-white text-tobacco"} rounded`}
-            >
-              <Layers size={18} strokeWidth={2.5} />
+            <div className="w-10 h-10 bg-bronze rounded-xl flex items-center justify-center shadow-lg">
+              <Layers className="text-white w-5 h-5" />
             </div>
             <span
-              className={`text-xl font-bold tracking-widest uppercase ${scrolled ? "text-tobacco" : "text-white"}`}
+              className={`text-2xl font-extrabold tracking-tighter uppercase font-syne ${scrolled ? "text-tobacco" : "text-white"}`}
             >
               Fluence
             </span>
           </div>
-
           <div
-            className={`hidden md:flex gap-10 font-semibold text-xs tracking-widest uppercase ${scrolled ? "text-stone-500" : "text-stone-400"}`}
+            className={`hidden md:flex gap-8 font-medium text-sm ${scrolled ? "text-stone-600" : "text-stone-300"}`}
           >
-            <a
-              href="#infrastructure"
-              className={`hover:${scrolled ? "text-tobacco" : "text-white"} transition-colors`}
-            >
-              Infrastructure
-            </a>
-            <a
-              href="#extracts"
-              className={`hover:${scrolled ? "text-tobacco" : "text-white"} transition-colors`}
-            >
-              Extracts
+            <a href="#features" className="hover:text-bronze transition-colors">
+              Platform
             </a>
             <a
               href="#developers"
-              className={`hover:${scrolled ? "text-tobacco" : "text-white"} transition-colors`}
+              className="hover:text-bronze transition-colors"
             >
               Developers
             </a>
             <a
               href="#compliance"
-              className={`hover:${scrolled ? "text-tobacco" : "text-white"} transition-colors`}
+              className="hover:text-bronze transition-colors"
             >
-              Trust
+              Company
             </a>
           </div>
-
-          <div className="flex gap-6 items-center">
+          <div className="flex gap-4 items-center">
             <button
-              className={`hidden md:block text-xs font-bold uppercase tracking-widest ${scrolled ? "text-tobacco" : "text-white"} hover:opacity-70 transition-opacity`}
+              className={`hidden md:block text-sm font-bold uppercase tracking-widest ${scrolled ? "text-tobacco" : "text-white"} hover:text-bronze transition-colors`}
             >
-              Log In
+              Sign In
             </button>
-            <button
-              className={`px-6 py-3 text-xs font-bold uppercase tracking-widest transition-all ${scrolled ? "bg-tobacco text-white hover:bg-bronze" : "bg-white text-tobacco hover:bg-bronze hover:text-white"}`}
-            >
+            <button className="px-6 py-2.5 bg-bronze text-white rounded-full text-xs font-extrabold uppercase tracking-[0.2em] shadow-lg hover:bg-[#9a7736] transition-colors">
               Get Started
             </button>
           </div>
         </div>
       </nav>
 
-      {/* SECTION 1: HERO */}
-      <section className="relative pt-40 pb-20 md:pt-56 md:pb-32 bg-[#2D241E] text-[#FDFBF9] bg-grid-pattern-dark min-h-screen flex items-center border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 w-full grid lg:grid-cols-12 gap-16 items-start">
-          <div className="lg:col-span-7 space-y-10 reveal-up">
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-2 bg-[#B68D40] rounded-none" />
-              <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#B68D40]">
-                Operational Across 9 Currencies
+      {/* SECTION 1: THE HERO */}
+      <section className="relative pt-40 pb-20 md:pt-48 md:pb-32 bg-tobacco text-white overflow-hidden min-h-[90vh] flex items-center">
+        {/* Abstract Background / Node Animation */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-1/4 right-[-10%] w-[50vw] h-[50vw] bg-bronze/20 blur-[150px] rounded-full" />
+          <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-[#EFE6DD]/10 blur-[120px] rounded-full" />
+
+          {/* Animated Nodes */}
+          <div className="hidden lg:block absolute top-1/3 right-32 abstract-node">
+            <div className="w-32 h-32 rounded-full border border-white/10 flex items-center justify-center pulse-ring">
+              <div className="w-16 h-16 bg-bronze rounded-full flex items-center justify-center shadow-[0_0_50px_rgba(182,141,64,0.8)]">
+                <Zap className="text-white w-6 h-6" />
+              </div>
+            </div>
+          </div>
+          <div
+            className="hidden lg:block absolute bottom-1/4 right-1/4 abstract-node"
+            style={{ animationDelay: "1s" }}
+          >
+            <div className="w-24 h-24 rounded-full border border-white/10 flex items-center justify-center">
+              <div className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center">
+                <Globe className="text-bronze w-5 h-5" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 w-full grid lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-8 space-y-8">
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-stone-300">
+                Live on 9 Currencies
               </span>
             </div>
-
-            <h1 className="text-6xl md:text-8xl lg:text-[7rem] font-bold leading-[0.9] tracking-tighter uppercase">
-              Get Paid <br />
-              <span className="font-syne italic text-[#B68D40] font-normal tracking-tight">
-                Globally.
-              </span>
+            <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-syne font-extrabold leading-[1.05] tracking-tight uppercase">
+              Get Paid <span className="text-bronze italic">Globally.</span>
               <br />
-              Pay Anyone, <br />
-              Anywhere.
+              Pay Anyone,{" "}
+              <span
+                className="text-transparent"
+                style={{ WebkitTextStroke: "1.5px white" }}
+              >
+                Anywhere.
+              </span>
             </h1>
-
-            <p className="text-xl md:text-2xl text-stone-400 font-medium max-w-xl leading-snug">
+            <p className="text-lg md:text-2xl text-stone-400 font-medium max-w-2xl leading-relaxed">
               The essential infrastructure for instant global payments, FX, and
               liquidity across Africa. Accept payments, manage payouts, and
               scale borders with one API.
             </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <button className="px-8 py-5 bg-[#B68D40] text-white text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-tobacco transition-colors flex items-center justify-between gap-4">
-                Initialize Account <ArrowRight size={18} />
+            <div className="flex flex-col sm:flex-row gap-6 pt-4">
+              <button className="px-8 py-4 bg-bronze text-white rounded-full text-sm font-extrabold uppercase tracking-[0.2em] shadow-[0_10px_30px_rgba(182,141,64,0.4)] hover:bg-[#9a7736] hover:scale-105 transition-all flex items-center justify-center gap-3">
+                Get Started <ArrowRight size={18} />
               </button>
-              <button className="px-8 py-5 bg-transparent border border-white/20 text-white text-sm font-bold uppercase tracking-widest hover:border-white transition-colors">
-                Explore Docs
+              <button className="px-8 py-4 bg-white/5 border border-white/10 text-white rounded-full text-sm font-extrabold uppercase tracking-[0.2em] hover:bg-white/10 transition-all flex items-center justify-center">
+                Talk to Sales
               </button>
             </div>
           </div>
 
-          {/* Image & Data Mockup Combination */}
-          <div
-            className="lg:col-span-5 relative mt-12 lg:mt-0 reveal-up"
-            style={{ animationDelay: "0.2s" }}
-          >
-            <div className="relative aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl border border-white/10 group">
-              <img
-                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=80"
-                alt="Editorial Architecture"
-                className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000 grayscale"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1A1412] via-[#1A1412]/50 to-transparent" />
-
-              <div className="absolute inset-x-0 bottom-0 p-8 flex flex-col">
-                <div className="bg-[#1A1412]/80 backdrop-blur-md border border-white/10 p-6 rounded-2xl">
-                  <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-stone-400">
-                      Live Settlement Node
-                    </span>
-                    <div className="flex gap-2">
-                      <div className="w-1.5 h-1.5 bg-stone-700 rounded-full" />
-                      <div className="w-1.5 h-1.5 bg-[#B68D40] rounded-full animate-pulse" />
-                    </div>
-                  </div>
-
-                  <div className="space-y-6">
-                    <div>
-                      <div className="font-mono text-[10px] text-stone-500 tracking-widest mb-1 uppercase">
-                        Ledger Balance
-                      </div>
-                      <div className="text-4xl font-bold tracking-tighter font-mono">
-                        $142,850.00
-                      </div>
-                    </div>
-
-                    <div className="space-y-3">
-                      {[
-                        {
-                          id: "TRX-091A",
-                          val: "+ ₦450,000",
-                          stat: "SETTLED",
-                          c: "#6B705C",
-                        },
-                        {
-                          id: "TRX-093C",
-                          val: "- KES 15,000",
-                          stat: "PENDING",
-                          c: "#A47148",
-                        },
-                      ].map((row, i) => (
-                        <div
-                          key={i}
-                          className="flex justify-between items-center bg-white/5 p-3 rounded-lg"
-                        >
-                          <div className="font-mono text-[10px] text-stone-400">
-                            {row.id}
-                          </div>
-                          <div className="flex items-center gap-4">
-                            <div className="font-mono text-xs text-white">
-                              {row.val}
-                            </div>
-                            <div
-                              className="font-mono text-[8px] uppercase tracking-widest"
-                              style={{ color: row.c }}
-                            >
-                              {row.stat}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 2: INFRASTRUCTURE (Editorial Grid) */}
-      <section
-        id="infrastructure"
-        className="py-24 md:py-40 bg-[#FDFBF9] bg-grid-pattern border-b border-stone-200"
-      >
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="mb-20 reveal-up flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-stone-300 pb-12">
-            <div>
-              <span className="text-[#B68D40] font-bold uppercase tracking-[0.4em] text-xs block mb-6">
-                Core Infrastructure
-              </span>
-              <h2 className="text-5xl md:text-7xl font-bold tracking-tighter uppercase leading-none text-tobacco">
-                Engineered <br />
-                <span className="text-stone-400">Capabilities.</span>
-              </h2>
-            </div>
-            <p className="max-w-xs text-stone-500 font-medium">
-              Modular financial primitives. Build exact payment flows without
-              unnecessary bloat.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-t border-l border-stone-200">
-            {/* 1. Collections */}
-            <div className="editorial-card border-r border-b border-stone-200 p-10 reveal-up group flex flex-col justify-between min-h-[320px]">
-              <div className="mb-12">
-                <Wallet
-                  className="w-8 h-8 text-stone-300 group-hover:text-tobacco transition-colors"
-                  strokeWidth={1.5}
-                />
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold mb-4 tracking-tight uppercase">
-                  Collections
-                </h3>
-                <p className="text-stone-500 leading-relaxed text-sm">
-                  Accept Bank Transfers, Mobile Money (Momo), Cards, and Crypto
-                  effortlessly via one unified integration.
-                </p>
-              </div>
-            </div>
-
-            {/* 2. Payouts (Dark Accent Card) */}
+          {/* Hero Mockup */}
+          <div className="lg:col-span-4 relative mt-12 lg:mt-0 reveal">
             <div
-              className="editorial-card dark bg-[#2D241E] text-white border-r border-b border-[#2D241E] p-10 reveal-up group flex flex-col justify-between min-h-[320px] relative overflow-hidden"
-              style={{ transitionDelay: "0.1s" }}
+              className="bg-[#1A1412] border border-white/10 rounded-[2.5rem] p-6 shadow-2xl relative z-10 abstract-node"
+              style={{ animationDuration: "8s" }}
             >
-              <div className="mb-12 relative z-10">
-                <Zap
-                  className="w-8 h-8 text-[#B68D40] group-hover:text-white transition-colors"
-                  strokeWidth={1.5}
-                />
-              </div>
-              <div className="relative z-10">
-                <h3 className="text-2xl font-bold mb-4 tracking-tight uppercase">
-                  Fastest Payouts
-                </h3>
-                <p className="text-stone-400 leading-relaxed text-sm group-hover:text-white/80">
-                  Instant withdrawals (10-60 seconds) directly to bank accounts
-                  or mobile wallets. Liquidity on demand.
-                </p>
-              </div>
-            </div>
-
-            {/* 3. Global Wallets */}
-            <div
-              className="editorial-card border-r border-b border-stone-200 p-10 reveal-up group flex flex-col justify-between min-h-[320px]"
-              style={{ transitionDelay: "0.2s" }}
-            >
-              <div className="mb-12">
-                <Globe
-                  className="w-8 h-8 text-stone-300 group-hover:text-tobacco transition-colors"
-                  strokeWidth={1.5}
-                />
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold mb-4 tracking-tight uppercase">
-                  Global Wallets
-                </h3>
-                <p className="text-stone-500 leading-relaxed text-sm">
-                  Hold and manage NGN, GHS, KES, UGX, ZAR, and more in a single,
-                  consolidated dashboard.
-                </p>
-              </div>
-            </div>
-
-            {/* 4. FX & Treasury */}
-            <div className="editorial-card border-r border-b border-stone-200 p-10 reveal-up group flex flex-col justify-between min-h-[320px]">
-              <div className="mb-12">
-                <RefreshCw
-                  className="w-8 h-8 text-stone-300 group-hover:text-tobacco transition-colors"
-                  strokeWidth={1.5}
-                />
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold mb-4 tracking-tight uppercase">
-                  FX & Treasury
-                </h3>
-                <p className="text-stone-500 leading-relaxed text-sm">
-                  Access highly competitive rates with transparent spreads
-                  across 40+ global currencies.
-                </p>
-              </div>
-            </div>
-
-            {/* 5. Payment Links */}
-            <div
-              className="editorial-card border-r border-b border-stone-200 p-10 reveal-up group flex flex-col justify-between min-h-[320px]"
-              style={{ transitionDelay: "0.1s" }}
-            >
-              <div className="mb-12">
-                <LinkIcon
-                  className="w-8 h-8 text-stone-300 group-hover:text-tobacco transition-colors"
-                  strokeWidth={1.5}
-                />
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold mb-4 tracking-tight uppercase">
-                  Payment Links
-                </h3>
-                <p className="text-stone-500 leading-relaxed text-sm">
-                  No-code checkout links designed for rapid social commerce and
-                  invoicing.
-                </p>
-              </div>
-            </div>
-
-            {/* 6. Connected Accounts */}
-            <div
-              className="editorial-card bg-[#EFE6DD] border-r border-b border-stone-200 p-10 reveal-up group flex flex-col justify-between min-h-[320px]"
-              style={{ transitionDelay: "0.2s" }}
-            >
-              <div className="mb-12">
-                <Users className="w-8 h-8 text-[#2D241E]" strokeWidth={1.5} />
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold mb-4 tracking-tight uppercase">
-                  Connected Accounts
-                </h3>
-                <p className="text-stone-600 leading-relaxed text-sm">
-                  Marketplace infrastructure built right in. Route funds, split
-                  payments, and manage multi-user environments.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 3: MERCHANT LOGIC (Austere & Clean) */}
-      <section className="py-24 md:py-40 bg-white border-b border-stone-200">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="grid lg:grid-cols-2 gap-20">
-            <div className="space-y-16 reveal-up">
-              <div>
-                <span className="text-[#B68D40] font-bold uppercase tracking-[0.4em] text-xs block mb-6">
-                  User Experience
+              <div className="flex justify-between items-center mb-8 border-b border-white/5 pb-4">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-stone-400">
+                  Live Settlement
                 </span>
-                <h2 className="text-5xl md:text-6xl font-bold tracking-tighter uppercase leading-none">
-                  Operational <br />
-                  Logic.
-                </h2>
+                <Activity className="text-bronze w-4 h-4" />
               </div>
-
-              <div className="space-y-0 border-t border-stone-200">
-                {/* Feature Row 1 */}
-                <div className="py-8 border-b border-stone-200 group flex flex-col md:flex-row gap-6 md:gap-12 md:items-start">
-                  <span className="font-mono text-xs tracking-widest text-stone-400 mt-1 w-12">
-                    01
-                  </span>
-                  <div>
-                    <h4 className="text-xl font-bold tracking-tight uppercase mb-3 group-hover:text-[#B68D40] transition-colors">
-                      Lifecycle Monitoring
-                    </h4>
-                    <p className="text-stone-500 text-sm leading-relaxed max-w-md">
-                      Real-time visibility into every transaction stage. From{" "}
-                      <span className="font-mono text-[10px] bg-stone-100 px-1 py-0.5 border border-stone-200 text-[#A47148]">
-                        Processing
-                      </span>{" "}
-                      to{" "}
-                      <span className="font-mono text-[10px] bg-stone-100 px-1 py-0.5 border border-stone-200 text-[#6B705C]">
-                        Succeeded
-                      </span>{" "}
-                      or{" "}
-                      <span className="font-mono text-[10px] bg-stone-100 px-1 py-0.5 border border-stone-200 text-[#7B2C2C]">
-                        Refunded
-                      </span>
-                      .
-                    </p>
+              <div className="space-y-6">
+                <div>
+                  <div className="text-[10px] uppercase font-bold text-stone-500 tracking-widest mb-1">
+                    Available Balance
+                  </div>
+                  <div className="text-4xl font-bold font-mono tracking-tight">
+                    $142,850.00
                   </div>
                 </div>
-                {/* Feature Row 2 */}
-                <div className="py-8 border-b border-stone-200 group flex flex-col md:flex-row gap-6 md:gap-12 md:items-start">
-                  <span className="font-mono text-xs tracking-widest text-stone-400 mt-1 w-12">
-                    02
-                  </span>
-                  <div>
-                    <h4 className="text-xl font-bold tracking-tight uppercase mb-3 group-hover:text-[#B68D40] transition-colors">
-                      Underpayment Handling
-                    </h4>
-                    <p className="text-stone-500 text-sm leading-relaxed max-w-md">
-                      Dynamic settlement logic to intelligently manage partial
-                      payments, eliminating manual reconciliation friction.
-                    </p>
-                  </div>
-                </div>
-                {/* Feature Row 3 */}
-                <div className="py-8 border-b border-stone-200 group flex flex-col md:flex-row gap-6 md:gap-12 md:items-start">
-                  <span className="font-mono text-xs tracking-widest text-stone-400 mt-1 w-12">
-                    03
-                  </span>
-                  <div>
-                    <h4 className="text-xl font-bold tracking-tight uppercase mb-3 group-hover:text-[#B68D40] transition-colors">
-                      Asynchronous Refunds
-                    </h4>
-                    <p className="text-stone-500 text-sm leading-relaxed max-w-md">
-                      Initiate and track refunds asynchronously via API or
-                      dashboard without blocking main operational flows.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="reveal-up flex items-center justify-center bg-[#EFE6DD] p-8 md:p-16 border border-stone-200">
-              <div className="bg-white border border-stone-200 p-8 w-full max-w-md shadow-2xl">
-                <div className="flex justify-between items-center mb-8 border-b border-stone-100 pb-4">
-                  <span className="font-bold text-sm uppercase tracking-widest">
-                    Live Feed
-                  </span>
-                  <div className="flex gap-1">
-                    <div className="w-1.5 h-1.5 rounded-full bg-stone-300"></div>
-                    <div className="w-1.5 h-1.5 rounded-full bg-stone-300"></div>
-                    <div className="w-1.5 h-1.5 rounded-full bg-stone-300"></div>
-                  </div>
-                </div>
-                <div className="space-y-6">
+                <div className="space-y-3 pt-4 border-t border-white/5">
                   {[
                     {
-                      t: "API Checkout",
-                      s: "Partial",
-                      c: "#A47148",
-                      a: "$450.00",
+                      id: "FL-091",
+                      amount: "+ ₦450,000",
+                      status: "Succeeded",
+                      color: "#6B705C",
                     },
                     {
-                      t: "Invoice #0992",
-                      s: "Succeeded",
-                      c: "#6B705C",
-                      a: "$1,200.00",
+                      id: "FL-092",
+                      amount: "+ GHS 8,200",
+                      status: "Succeeded",
+                      color: "#6B705C",
                     },
                     {
-                      t: "Payment Link",
-                      s: "Refunded",
-                      c: "#7B2C2C",
-                      a: "$89.99",
+                      id: "FL-093",
+                      amount: "- KES 15,000",
+                      status: "Processing",
+                      color: "#A47148",
                     },
-                  ].map((row, i) => (
+                  ].map((tx, i) => (
                     <div
                       key={i}
-                      className="flex justify-between items-center group cursor-pointer"
+                      className="flex justify-between items-center p-3 rounded-xl bg-white/5"
                     >
                       <div>
-                        <div className="font-bold text-sm group-hover:text-[#B68D40] transition-colors">
-                          {row.t}
+                        <div className="font-mono text-[10px] text-stone-400">
+                          {tx.id}
                         </div>
-                        <div
-                          className="font-mono text-[10px] text-stone-400 mt-1"
-                          style={{ color: row.c }}
-                        >
-                          {row.s}
+                        <div className="text-xs font-bold mt-1 text-white">
+                          {tx.amount}
                         </div>
                       </div>
-                      <div className="font-mono text-sm font-bold">{row.a}</div>
+                      <div
+                        className="px-2 py-1 rounded border text-[8px] font-bold uppercase tracking-wider flex items-center gap-1.5"
+                        style={{
+                          color: tx.color,
+                          borderColor: `${tx.color}40`,
+                          backgroundColor: `${tx.color}10`,
+                        }}
+                      >
+                        <div
+                          className="w-1.5 h-1.5 rounded-full"
+                          style={{ backgroundColor: tx.color }}
+                        />
+                        {tx.status}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -561,81 +284,137 @@ const App = () => {
         </div>
       </section>
 
-      {/* SECTION 3.5: EXTRACTS & REPORTING */}
-      <section
-        id="extracts"
-        className="py-24 md:py-40 bg-[#1A1412] text-white border-b border-white/10"
-      >
+      {/* SECTION 2: THE BENTO GRID */}
+      <section id="features" className="py-24 md:py-32 bg-parchment relative">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
-            {/* Visual Editorial Image */}
-            <div className="relative reveal-up order-2 lg:order-1">
-              <div className="aspect-[4/5] overflow-hidden rounded-[3rem] border border-white/10 relative shadow-2xl group">
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#1A1412]/40 to-transparent z-10 opacity-80"></div>
-                <img
-                  src="https://images.unsplash.com/photo-1618044733300-9472054094ee?auto=format&fit=crop&w=1000&q=80"
-                  alt="Data Extracts Texture"
-                  className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-1000 grayscale"
-                />
-                <div className="absolute bottom-12 left-10 right-10 z-20">
-                  <div className="flex items-center gap-3 mb-4">
-                    <FileSpreadsheet className="text-[#B68D40] w-6 h-6" />
-                    <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#B68D40]">
-                      MT940 / CSV / JSON
-                    </span>
-                  </div>
-                  <h3 className="text-3xl font-syne font-bold leading-tight italic">
-                    Automated Ledger
-                    <br />
-                    Reconciliation
-                  </h3>
-                </div>
+          <div className="mb-16 reveal">
+            <span className="text-bronze font-bold uppercase tracking-[0.5em] text-xs block mb-4">
+              Core Infrastructure
+            </span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-syne font-extrabold tracking-tighter uppercase leading-none text-tobacco">
+              Everything you need.
+              <br />
+              Nothing you don't.
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[minmax(280px,auto)]">
+            {/* 1. Collections */}
+            <div className="bento-card reveal bg-white rounded-[2.5rem] p-8 border border-stone-200 shadow-sm flex flex-col justify-between group">
+              <div className="w-14 h-14 bg-oak rounded-2xl flex items-center justify-center text-tobacco mb-8 group-hover:scale-110 transition-transform">
+                <Wallet className="w-7 h-7" />
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold mb-3 tracking-tight">
+                  Collections
+                </h3>
+                <p className="text-stone-500 font-medium">
+                  Accept Bank Transfers, Mobile Money (Momo), Cards, and Crypto
+                  effortlessly via one unified integration.
+                </p>
               </div>
             </div>
 
-            {/* Text Content */}
-            <div className="space-y-12 reveal-up order-1 lg:order-2">
-              <div>
-                <span className="text-[#B68D40] font-bold uppercase tracking-[0.4em] text-xs block mb-6">
-                  Data & Reporting
-                </span>
-                <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter uppercase leading-none">
-                  Financial <br />
-                  <span className="font-syne italic font-normal text-stone-400">
-                    Extracts.
-                  </span>
-                </h2>
+            {/* 2. Fastest Payouts */}
+            <div className="bento-card reveal bg-tobacco text-white rounded-[2.5rem] p-8 border border-white/5 shadow-xl flex flex-col justify-between group lg:col-span-2 relative overflow-hidden">
+              <div className="absolute right-0 top-0 w-64 h-64 bg-bronze/10 blur-[80px] rounded-full pointer-events-none" />
+              <div className="relative z-10 w-14 h-14 bg-bronze rounded-2xl flex items-center justify-center text-white mb-8 group-hover:scale-110 transition-transform">
+                <Zap className="w-7 h-7" />
               </div>
-              <p className="text-xl text-stone-400 font-medium leading-relaxed max-w-lg">
-                Generate, schedule, and route comprehensive financial extracts.
-                We ensure perfect symmetry between your operational ledgers and
-                your ultimate bank accounts.
-              </p>
+              <div className="relative z-10 max-w-lg">
+                <h3 className="text-3xl font-bold mb-3 tracking-tight font-syne italic">
+                  Fastest Payouts
+                </h3>
+                <p className="text-stone-400 font-medium text-lg">
+                  Instant withdrawals (10-60 seconds) directly to bank accounts
+                  or mobile wallets. Liquidity when you actually need it.
+                </p>
+              </div>
+            </div>
 
-              <div className="space-y-6 pt-6 border-t border-white/10">
-                <div className="flex items-center gap-5 group">
-                  <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-[#B68D40] transition-colors">
-                    <CheckCircle2 className="text-[#B68D40] w-5 h-5 shrink-0" />
+            {/* 3. Multi-Currency Wallets */}
+            <div className="bento-card reveal bg-white rounded-[2.5rem] p-8 border border-stone-200 shadow-sm flex flex-col justify-between group">
+              <div className="w-14 h-14 bg-oak rounded-2xl flex items-center justify-center text-tobacco mb-8 group-hover:scale-110 transition-transform">
+                <Globe className="w-7 h-7" />
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold mb-3 tracking-tight">
+                  Global Wallets
+                </h3>
+                <p className="text-stone-500 font-medium">
+                  Hold and manage NGN, GHS, KES, UGX, ZAR, and more in a single,
+                  consolidated dashboard.
+                </p>
+              </div>
+            </div>
+
+            {/* 4. FX & Treasury */}
+            <div className="bento-card reveal bg-white rounded-[2.5rem] p-8 border border-stone-200 shadow-sm flex flex-col justify-between group">
+              <div className="w-14 h-14 bg-oak rounded-2xl flex items-center justify-center text-tobacco mb-8 group-hover:scale-110 transition-transform">
+                <RefreshCw className="w-7 h-7" />
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold mb-3 tracking-tight">
+                  FX & Treasury
+                </h3>
+                <p className="text-stone-500 font-medium">
+                  Access highly competitive rates with transparent spreads
+                  across 40+ global currencies.
+                </p>
+              </div>
+            </div>
+
+            {/* 5. Payment Links */}
+            <div className="bento-card reveal bg-white rounded-[2.5rem] p-8 border border-stone-200 shadow-sm flex flex-col justify-between group">
+              <div className="w-14 h-14 bg-oak rounded-2xl flex items-center justify-center text-tobacco mb-8 group-hover:scale-110 transition-transform">
+                <LinkIcon className="w-7 h-7" />
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold mb-3 tracking-tight">
+                  Payment Links
+                </h3>
+                <p className="text-stone-500 font-medium">
+                  No-code checkout links designed for rapid social commerce and
+                  invoicing.
+                </p>
+              </div>
+            </div>
+
+            {/* 6. Connected Accounts */}
+            <div className="bento-card reveal bg-oak rounded-[2.5rem] p-8 border border-stone-200 flex flex-col justify-between group lg:col-span-3">
+              <div className="flex flex-col md:flex-row gap-8 items-start md:items-center justify-between w-full h-full">
+                <div className="max-w-xl">
+                  <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-tobacco mb-8 shadow-sm group-hover:scale-110 transition-transform">
+                    <Users className="w-7 h-7" />
                   </div>
-                  <p className="font-medium text-stone-300">
-                    Customizable data schemas.
+                  <h3 className="text-3xl font-bold mb-3 tracking-tight">
+                    Connected Accounts
+                  </h3>
+                  <p className="text-stone-600 font-medium text-lg">
+                    Marketplace infrastructure built right in. Route funds,
+                    split payments, and manage multi-user environments
+                    seamlessly.
                   </p>
                 </div>
-                <div className="flex items-center gap-5 group">
-                  <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-[#B68D40] transition-colors">
-                    <CheckCircle2 className="text-[#B68D40] w-5 h-5 shrink-0" />
+                <div className="w-full md:w-auto bg-white rounded-2xl p-6 border border-stone-200 shadow-lg flex-1 md:max-w-xs space-y-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 bg-stone-100 rounded-full flex items-center justify-center font-bold text-xs">
+                      M1
+                    </div>
+                    <div className="flex-1">
+                      <div className="h-2 bg-stone-200 rounded-full w-full mb-2" />
+                      <div className="h-2 bg-emerald-500 rounded-full w-3/4" />
+                    </div>
                   </div>
-                  <p className="font-medium text-stone-300">
-                    Automated end-of-day (EOD) scheduling.
-                  </p>
-                </div>
-                <div className="flex items-center gap-5 group">
-                  <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-[#B68D40] transition-colors">
-                    <CheckCircle2 className="text-[#B68D40] w-5 h-5 shrink-0" />
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 bg-stone-100 rounded-full flex items-center justify-center font-bold text-xs">
+                      M2
+                    </div>
+                    <div className="flex-1">
+                      <div className="h-2 bg-stone-200 rounded-full w-full mb-2" />
+                      <div className="h-2 bg-emerald-500 rounded-full w-1/2" />
+                    </div>
                   </div>
-                  <p className="font-medium text-stone-300">
-                    Multi-currency aggregate roll-ups.
-                  </p>
                 </div>
               </div>
             </div>
@@ -643,33 +422,204 @@ const App = () => {
         </div>
       </section>
 
-      {/* SECTION 4: DEVELOPER EXPERIENCE (Sharp & Brutalist) */}
+      {/* SECTION 3: MERCHANT FEATURES */}
+      <section className="py-24 md:py-32 bg-white border-y border-stone-100">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
+            <div className="space-y-12 reveal">
+              <div>
+                <span className="text-bronze font-bold uppercase tracking-[0.5em] text-xs block mb-4">
+                  Merchant Experience
+                </span>
+                <h2 className="text-4xl md:text-5xl font-syne font-extrabold tracking-tighter uppercase leading-none">
+                  Built for Operational Logic.
+                </h2>
+              </div>
+              <div className="space-y-10">
+                <div className="flex gap-6 group">
+                  <div className="w-12 h-12 rounded-xl bg-oak flex items-center justify-center shrink-0 group-hover:bg-bronze group-hover:text-white transition-colors">
+                    <Activity className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold tracking-tight mb-2">
+                      Lifecycle Monitoring
+                    </h4>
+                    <p className="text-stone-500 font-medium leading-relaxed">
+                      Real-time visibility into every transaction stage. From{" "}
+                      <span className="font-mono text-xs bg-stone-100 px-1 rounded text-[#A47148]">
+                        Processing
+                      </span>{" "}
+                      to{" "}
+                      <span className="font-mono text-xs bg-stone-100 px-1 rounded text-[#6B705C]">
+                        Succeeded
+                      </span>{" "}
+                      or{" "}
+                      <span className="font-mono text-xs bg-stone-100 px-1 rounded text-[#7B2C2C]">
+                        Refunded
+                      </span>
+                      .
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-6 group">
+                  <div className="w-12 h-12 rounded-xl bg-oak flex items-center justify-center shrink-0 group-hover:bg-bronze group-hover:text-white transition-colors">
+                    <ShieldCheck className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold tracking-tight mb-2">
+                      Underpayment Handling
+                    </h4>
+                    <p className="text-stone-500 font-medium leading-relaxed">
+                      Dynamic settlement logic to intelligently handle partial
+                      payments, reducing manual reconciliation friction.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-6 group">
+                  <div className="w-12 h-12 rounded-xl bg-oak flex items-center justify-center shrink-0 group-hover:bg-bronze group-hover:text-white transition-colors">
+                    <RotateCcw className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold tracking-tight mb-2">
+                      Asynchronous Refunds
+                    </h4>
+                    <p className="text-stone-500 font-medium leading-relaxed">
+                      Initiate and track refunds asynchronously via API or
+                      dashboard without blocking main operations.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative reveal">
+              <div className="absolute inset-0 bg-bronze/5 blur-[100px] rounded-full" />
+              <div className="bg-parchment border border-stone-200 rounded-[3rem] p-8 md:p-12 shadow-2xl relative z-10">
+                <div className="flex justify-between items-center mb-8 border-b border-stone-200 pb-6">
+                  <span className="font-bold text-lg">Transaction Feed</span>
+                  <span className="text-xs font-mono text-stone-400">
+                    Updated Just Now
+                  </span>
+                </div>
+                <div className="space-y-4">
+                  {[
+                    {
+                      t: "Invoice #0992",
+                      s: "Succeeded",
+                      c: "#6B705C",
+                      d: "Today, 14:02",
+                    },
+                    {
+                      t: "API Checkout",
+                      s: "Partial",
+                      c: "#A47148",
+                      d: "Today, 11:45",
+                    },
+                    {
+                      t: "Payment Link",
+                      s: "Refunded",
+                      c: "#7B2C2C",
+                      d: "Yesterday",
+                    },
+                  ].map((row, i) => (
+                    <div
+                      key={i}
+                      className="flex justify-between items-center p-4 bg-white border border-stone-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-full bg-stone-50 border border-stone-100 flex items-center justify-center">
+                          <Layers className="w-4 h-4 text-stone-400" />
+                        </div>
+                        <div>
+                          <div className="font-bold text-sm">{row.t}</div>
+                          <div className="text-[10px] text-stone-400">
+                            {row.d}
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="px-3 py-1 rounded bg-stone-50 border font-mono text-[10px] uppercase font-bold tracking-widest"
+                        style={{ color: row.c, borderColor: `${row.c}30` }}
+                      >
+                        {row.s}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 4: DEVELOPER EXPERIENCE */}
       <section
         id="developers"
-        className="py-24 md:py-40 bg-[#2D241E] text-white border-b border-white/10"
+        className="py-24 md:py-32 bg-tobacco text-white overflow-hidden relative"
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+        <div className="absolute top-0 right-0 w-[80vw] h-[80vw] bg-bronze/10 blur-[200px] rounded-full pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-10 reveal">
+              <div>
+                <span className="text-bronze font-bold uppercase tracking-[0.5em] text-xs block mb-4">
+                  Developer Experience
+                </span>
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-syne font-extrabold tracking-tighter uppercase leading-none">
+                  Designed for Developers.
+                  <br />
+                  Built for Reliability.
+                </h2>
+              </div>
+              <p className="text-xl text-stone-400 font-medium leading-relaxed">
+                A single, unified API for all African payment rails. We handle
+                the complexity of local financial grids so you can focus on
+                building your product.
+              </p>
+
+              <div className="grid sm:grid-cols-2 gap-8 pt-6">
+                <div>
+                  <Code className="text-bronze w-6 h-6 mb-4" />
+                  <h4 className="font-bold text-lg mb-2">Real-time Webhooks</h4>
+                  <p className="text-sm text-stone-400">
+                    Instant event notifications for state changes across your
+                    integration.
+                  </p>
+                </div>
+                <div>
+                  <Terminal className="text-bronze w-6 h-6 mb-4" />
+                  <h4 className="font-bold text-lg mb-2">QA Sandbox</h4>
+                  <p className="text-sm text-stone-400">
+                    A mirrored testing environment to validate flows before
+                    hitting production.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             {/* Code Window UI */}
-            <div className="reveal-up order-2 lg:order-1">
-              <div className="bg-[#1A1412] border border-white/10 flex flex-col font-mono text-sm shadow-2xl">
+            <div className="reveal">
+              <div className="bg-[#1A1412] rounded-[2rem] border border-white/10 overflow-hidden shadow-2xl">
                 {/* Editor Header */}
-                <div className="flex justify-between items-center px-6 py-4 border-b border-white/10 bg-white/5">
-                  <div className="text-[10px] uppercase tracking-widest text-stone-400">
-                    POST /v1/collections
+                <div className="flex justify-between items-center px-6 py-4 border-b border-white/5 bg-black/20">
+                  <div className="flex gap-2">
+                    <div className="w-3 h-3 rounded-full bg-rose-500" />
+                    <div className="w-3 h-3 rounded-full bg-amber-500" />
+                    <div className="w-3 h-3 rounded-full bg-emerald-500" />
                   </div>
 
                   {/* Sandbox Toggle */}
-                  <div className="flex items-center bg-black/40 p-1 border border-white/5">
+                  <div className="flex items-center bg-black/40 rounded-full p-1 border border-white/5">
                     <button
                       onClick={() => setIsLive(false)}
-                      className={`px-4 py-1 text-[10px] font-bold uppercase tracking-widest transition-colors ${!isLive ? "bg-white text-tobacco" : "text-stone-500 hover:text-white"}`}
+                      className={`px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${!isLive ? "bg-white text-tobacco shadow-sm" : "text-stone-500 hover:text-white"}`}
                     >
-                      Test
+                      Sandbox
                     </button>
                     <button
                       onClick={() => setIsLive(true)}
-                      className={`px-4 py-1 text-[10px] font-bold uppercase tracking-widest transition-colors ${isLive ? "bg-[#B68D40] text-white" : "text-stone-500 hover:text-white"}`}
+                      className={`px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${isLive ? "bg-bronze text-white shadow-sm" : "text-stone-500 hover:text-white"}`}
                     >
                       Live
                     </button>
@@ -678,97 +628,54 @@ const App = () => {
                   <button
                     onClick={handleCopy}
                     className="text-stone-400 hover:text-white transition-colors"
-                    title="Copy code"
+                    title="Copy to clipboard"
                   >
                     {isCopied ? (
-                      <span className="text-[#B68D40] text-xs">Copied</span>
+                      <Check size={16} className="text-emerald-500" />
                     ) : (
                       <Copy size={16} />
                     )}
                   </button>
                 </div>
                 {/* Code Block */}
-                <div className="p-8 overflow-x-auto leading-loose text-stone-300">
-                  <pre>
-                    <code>
+                <div className="p-6 overflow-x-auto text-sm leading-loose">
+                  <pre className="font-mono">
+                    <code className="text-stone-300">
                       <span className="text-[#B68D40]">curl</span> -X POST
                       https://api.fluence.com/v1/collections \<br />
                       <span className="text-stone-500"> -H</span>{" "}
-                      "Authorization: Bearer {isLive ? "live" : "test"}
-                      _sk_8f92j..." \<br />
-                      <span className="text-stone-500"> -H</span> "Content-Type:
-                      application/json" \<br />
-                      <span className="text-stone-500"> -d</span> '{"{"}
+                      <span className="text-[#EFE6DD]">
+                        "Authorization: Bearer {isLive ? "live" : "test"}
+                        _sk_8f92j..."
+                      </span>{" "}
+                      \<br />
+                      <span className="text-stone-500"> -H</span>{" "}
+                      <span className="text-[#EFE6DD]">
+                        "Content-Type: application/json"
+                      </span>{" "}
+                      \<br />
+                      <span className="text-stone-500"> -d</span>{" "}
+                      <span className="text-emerald-400">'{"{"}</span>
                       <br />
-                      <span className="text-stone-400"> "amount"</span>: 50000,
+                      <span className="text-blue-300"> "amount"</span>:{" "}
+                      <span className="text-purple-400">50000</span>,<br />
+                      <span className="text-blue-300"> "currency"</span>:{" "}
+                      <span className="text-[#EFE6DD]">"NGN"</span>,<br />
+                      <span className="text-blue-300"> "method"</span>:{" "}
+                      <span className="text-[#EFE6DD]">"bank_transfer"</span>,
                       <br />
-                      <span className="text-stone-400"> "currency"</span>:
-                      "NGN",
+                      <span className="text-blue-300"> "customer"</span>: {"{"}
                       <br />
-                      <span className="text-stone-400"> "method"</span>:
-                      "bank_transfer",
-                      <br />
-                      <span className="text-stone-400"> "customer"</span>: {"{"}
-                      <br />
-                      <span className="text-stone-400"> "email"</span>:
-                      "merchant@example.com"
+                      <span className="text-blue-300"> "email"</span>:{" "}
+                      <span className="text-[#EFE6DD]">
+                        "merchant@example.com"
+                      </span>
                       <br />
                       {"    }"}
                       <br />
-                      {"}"}'
+                      <span className="text-emerald-400"> {"}"}'</span>
                     </code>
                   </pre>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-12 reveal-up order-1 lg:order-2">
-              <div>
-                <span className="text-[#B68D40] font-bold uppercase tracking-[0.4em] text-xs block mb-6">
-                  Developer Experience
-                </span>
-                <h2 className="text-5xl md:text-6xl font-bold tracking-tighter uppercase leading-none">
-                  Heavy
-                  <br />
-                  Lifting.
-                </h2>
-              </div>
-              <p className="text-xl text-stone-400 leading-relaxed font-medium">
-                A single, unified API for all African payment rails. We absorb
-                the complexity of disparate local financial networks so you can
-                focus entirely on your core product architecture.
-              </p>
-
-              <div className="border-t border-white/10 pt-8 space-y-8">
-                <div className="flex gap-6">
-                  <Code
-                    className="text-stone-500 w-6 h-6 shrink-0"
-                    strokeWidth={1.5}
-                  />
-                  <div>
-                    <h4 className="font-bold text-lg uppercase tracking-tight mb-2">
-                      Real-time Webhooks
-                    </h4>
-                    <p className="text-sm text-stone-400 leading-relaxed">
-                      Instant event notifications for state changes across your
-                      entire integration lifecycle.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-6">
-                  <Terminal
-                    className="text-stone-500 w-6 h-6 shrink-0"
-                    strokeWidth={1.5}
-                  />
-                  <div>
-                    <h4 className="font-bold text-lg uppercase tracking-tight mb-2">
-                      QA Sandbox Environment
-                    </h4>
-                    <p className="text-sm text-stone-400 leading-relaxed">
-                      A completely mirrored testing grid to validate flows
-                      before hitting production deployment.
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>
@@ -777,44 +684,43 @@ const App = () => {
       </section>
 
       {/* SECTION 5: TRUST & COMPLIANCE */}
-      <section id="compliance" className="py-32 bg-[#B68D40] text-[#1A1412]">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 text-center reveal-up">
-          <span className="font-bold uppercase tracking-[0.5em] text-xs block mb-16 opacity-60">
+      <section
+        id="compliance"
+        className="py-24 bg-oak border-y border-stone-200"
+      >
+        <div className="max-w-7xl mx-auto px-6 md:px-12 text-center reveal">
+          <span className="text-bronze font-bold uppercase tracking-[0.5em] text-xs block mb-12">
             Institutional Standards
           </span>
-
-          <div className="grid md:grid-cols-3 gap-12 text-left border-y border-[#1A1412]/20 divide-y md:divide-y-0 md:divide-x divide-[#1A1412]/20">
-            <div className="py-12 md:px-8 md:py-16">
-              <ShieldCheck
-                className="w-8 h-8 mb-8 opacity-80"
-                strokeWidth={1.5}
-              />
-              <h4 className="text-2xl font-bold uppercase tracking-tight mb-4">
+          <div className="grid md:grid-cols-3 gap-12 text-left divide-y md:divide-y-0 md:divide-x divide-stone-300">
+            <div className="md:px-8 pt-8 md:pt-0">
+              <ShieldCheck className="w-10 h-10 text-bronze mb-6" />
+              <h4 className="text-2xl font-bold mb-3 tracking-tight">
                 Licensed & Certified
               </h4>
-              <p className="font-medium opacity-80 text-sm leading-relaxed">
-                Operating with top-tier licensing and strict PCI-DSS compliance
-                to ensure absolute data integrity.
+              <p className="text-stone-600 font-medium">
+                Bank-grade security. Operating with top-tier licensing and
+                PCI-DSS compliance to ensure data integrity.
               </p>
             </div>
-            <div className="py-12 md:px-8 md:py-16">
-              <Activity className="w-8 h-8 mb-8 opacity-80" strokeWidth={1.5} />
-              <h4 className="text-2xl font-bold uppercase tracking-tight mb-4">
+            <div className="md:px-8 pt-8 md:pt-0">
+              <Activity className="w-10 h-10 text-bronze mb-6" />
+              <h4 className="text-2xl font-bold mb-3 tracking-tight">
                 99.95% Uptime
               </h4>
-              <p className="font-medium opacity-80 text-sm leading-relaxed">
+              <p className="text-stone-600 font-medium">
                 High availability infrastructure with automated failovers.
-                Engineering reliability you can build a business on.
+                Reliability you can build a business on.
               </p>
             </div>
-            <div className="py-12 md:px-8 md:py-16">
-              <Headset className="w-8 h-8 mb-8 opacity-80" strokeWidth={1.5} />
-              <h4 className="text-2xl font-bold uppercase tracking-tight mb-4">
+            <div className="md:px-8 pt-8 md:pt-0">
+              <Headset className="w-10 h-10 text-bronze mb-6" />
+              <h4 className="text-2xl font-bold mb-3 tracking-tight">
                 Dedicated Support
               </h4>
-              <p className="font-medium opacity-80 text-sm leading-relaxed">
-                Highly responsive technical support teams and dedicated account
-                managers for high-volume enterprise merchants.
+              <p className="text-stone-600 font-medium">
+                Responsive technical support and dedicated account managers for
+                high-volume enterprise merchants.
               </p>
             </div>
           </div>
@@ -822,59 +728,61 @@ const App = () => {
       </section>
 
       {/* FOOTER CTA & LINKS */}
-      <footer className="bg-[#1A1412] text-white pt-32 pb-12">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          {/* Huge CTA */}
-          <div className="flex flex-col lg:flex-row justify-between lg:items-end border-b border-white/10 pb-24 mb-24 reveal-up gap-12">
-            <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold uppercase leading-[0.9] tracking-tighter max-w-3xl">
-              Deploy
+      <footer className="bg-[#1A1412] text-white pt-32 pb-12 overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-[50vw] h-[50vw] bg-bronze/5 blur-[150px] rounded-full pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+          {/* Massive CTA */}
+          <div className="text-center mb-32 reveal">
+            <h2 className="text-5xl md:text-7xl font-syne font-extrabold italic uppercase leading-[0.9] tracking-tighter mb-8">
+              Ready to simplify
               <br />
-              <span className="text-[#B68D40]">Liquidity.</span>
+              your operations?
             </h2>
-            <button className="px-10 py-6 bg-white text-[#1A1412] text-sm font-bold uppercase tracking-widest hover:bg-[#B68D40] hover:text-white transition-colors flex items-center justify-center gap-4 w-full lg:w-auto">
-              Open An Account <ArrowUpRight size={18} />
+            <button className="px-10 py-5 bg-bronze text-white rounded-full text-sm font-extrabold uppercase tracking-[0.2em] shadow-[0_10px_40px_rgba(182,141,64,0.3)] hover:bg-[#9a7736] hover:scale-105 transition-all">
+              Open An Account Today
             </button>
           </div>
 
           {/* Links Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 reveal-up">
-            <div className="col-span-2 lg:col-span-2 space-y-8">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-white text-[#1A1412] flex items-center justify-center">
-                  <Layers size={16} strokeWidth={2.5} />
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 border-t border-white/10 pt-16 reveal">
+            <div className="col-span-2 lg:col-span-2 space-y-6">
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 bg-bronze rounded-xl flex items-center justify-center">
+                  <Layers className="text-white w-5 h-5" />
                 </div>
-                <span className="text-xl font-bold uppercase tracking-widest">
+                <span className="text-2xl font-bold uppercase font-syne tracking-tighter">
                   Fluence
                 </span>
               </div>
-              <p className="text-stone-500 text-sm max-w-xs leading-relaxed">
+              <p className="text-stone-500 font-medium max-w-sm">
                 The essential infrastructure for global payments, FX, and
                 liquidity across Africa.
               </p>
             </div>
 
             <div>
-              <h4 className="font-mono uppercase tracking-[0.2em] text-xs mb-8 text-stone-300">
+              <h4 className="font-bold uppercase tracking-widest text-xs mb-6 text-stone-300">
                 Products
               </h4>
-              <ul className="space-y-5 text-stone-500 text-sm font-medium">
+              <ul className="space-y-4 text-stone-500 font-medium text-sm">
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="#" className="hover:text-bronze transition-colors">
                     Collections
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="#" className="hover:text-bronze transition-colors">
                     Payouts
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="#" className="hover:text-bronze transition-colors">
                     Storefront
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="#" className="hover:text-bronze transition-colors">
                     Invoicing
                   </a>
                 </li>
@@ -882,56 +790,56 @@ const App = () => {
             </div>
 
             <div>
-              <h4 className="font-mono uppercase tracking-[0.2em] text-xs mb-8 text-stone-300">
+              <h4 className="font-bold uppercase tracking-widest text-xs mb-6 text-stone-300">
                 Resources
               </h4>
-              <ul className="space-y-5 text-stone-500 text-sm font-medium">
+              <ul className="space-y-4 text-stone-500 font-medium text-sm">
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="#" className="hover:text-bronze transition-colors">
                     API Docs
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Sandbox
+                  <a href="#" className="hover:text-bronze transition-colors">
+                    Developer Sandbox
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="#" className="hover:text-bronze transition-colors">
                     Blog
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Status
+                  <a href="#" className="hover:text-bronze transition-colors">
+                    FAQ
                   </a>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-mono uppercase tracking-[0.2em] text-xs mb-8 text-stone-300">
+              <h4 className="font-bold uppercase tracking-widest text-xs mb-6 text-stone-300">
                 Company
               </h4>
-              <ul className="space-y-5 text-stone-500 text-sm font-medium">
+              <ul className="space-y-4 text-stone-500 font-medium text-sm">
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    About
+                  <a href="#" className="hover:text-bronze transition-colors">
+                    About Us
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a href="#" className="hover:text-bronze transition-colors">
                     Contact Sales
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Privacy
+                  <a href="#" className="hover:text-bronze transition-colors">
+                    Privacy Policy
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Terms
+                  <a href="#" className="hover:text-bronze transition-colors">
+                    Terms of Service
                   </a>
                 </li>
               </ul>
@@ -939,19 +847,19 @@ const App = () => {
           </div>
 
           {/* Offices & Copyright */}
-          <div className="mt-32 flex flex-col md:flex-row justify-between items-start md:items-center gap-8 text-[10px] font-mono text-stone-500 uppercase tracking-[0.2em] reveal-up">
-            <div className="flex flex-wrap gap-8">
+          <div className="mt-24 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 text-xs font-mono text-stone-500 uppercase tracking-widest reveal">
+            <div className="flex items-center gap-6 flex-wrap justify-center md:justify-start">
               <span className="flex items-center gap-2">
-                <MapPin size={12} /> Dallas
+                <MapPin size={14} /> Dallas
               </span>
               <span className="flex items-center gap-2">
-                <MapPin size={12} /> Lagos
+                <MapPin size={14} /> Lagos
               </span>
               <span className="flex items-center gap-2">
-                <MapPin size={12} /> London
+                <MapPin size={14} /> London
               </span>
               <span className="flex items-center gap-2">
-                <MapPin size={12} /> Toronto
+                <MapPin size={14} /> Toronto
               </span>
             </div>
             <div>© 2026 Fluence Operations</div>
